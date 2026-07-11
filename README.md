@@ -41,17 +41,64 @@ pac auth select    # 🎯 activate the right one
 
 > 💡 **Tip:** Prefer a query file over inline JSON to avoid shell-escaping headaches.
 
-```powershell
-pac admin query --query-file .\query.json                    # 📋 Grid (CSV-like) to console
-pac admin query -qf .\query.json -ot Json -of .\out.json     # 🧾 full JSON with metadata
-pac admin query -qf .\query.json -ot Grid -of .\out.csv      # 📈 CSV export
-```
+### 🎛️ Arguments
+
+| Argument | Alias | Description |
+| --- | --- | --- |
+| `--query-file` | `-qf` | Read the query body from a `.json` file. |
+| `--query` | `-q` | Provide the query body inline as a string. |
+| `--output-type` | `-ot` | `Grid` *(default)*, `List`, or `Json`. |
+| `--output-file` | `-of` | Write results to a file (`Grid` → CSV, `Json` → JSON). |
 
 | Output type | Flag | Best for |
 | --- | --- | --- |
 | `Grid` *(default)* | `-ot Grid` | 👓 Quick, readable tables |
 | `List` | `-ot List` | 📝 Simple line-per-field text |
 | `Json` | `-ot Json` | 🧬 Nested data, metadata & pagination |
+
+### 🖥️ Command samples
+
+```powershell
+# 📋 Run a query file, print a Grid table to the console (default output type)
+pac admin query --query-file .\query.json
+pac admin query -qf .\query.json                             # 🔁 same, using the alias
+
+# 🧾 Full JSON (metadata, nested props, pagination token) to the console
+pac admin query --query-file .\query.json --output-type Json
+pac admin query -qf .\query.json -ot Json                    # 🔁 alias form
+
+# 📝 Simple line-per-field List output
+pac admin query -qf .\query.json -ot List
+
+# 📈 Export a CSV file (Grid + --output-file)
+pac admin query --query-file .\query.json --output-type Grid --output-file .\inventory.csv
+pac admin query -qf .\query.json -ot Grid -of .\inventory.csv
+
+# 💾 Export the raw JSON response to a file
+pac admin query -qf .\query.json -ot Json -of .\inventory.json
+```
+
+> ⚠️ There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. **Stick with `--query-file`** — save the JSON to a `.json` file and point `-qf` at it.
+
+### 🔐 Pick the right auth profile first
+
+```powershell
+pac auth list                                                # 👀 see profiles
+pac auth select --index 1                                    # 🎯 activate one
+pac auth who                                                 # ✅ confirm the active profile & tenant
+```
+
+### 📄 Paginating large result sets
+
+`Grid`/`List` cap what they print. For big exports, use `Json` and follow the `skipToken`: when the response has a non-empty `skipToken`, copy it into `Options.SkipToken` in your query file and rerun to fetch the next page — keep every other clause unchanged.
+
+```jsonc
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [ /* ... */ ],
+  "Options": { "Top": 1000, "Skip": 0, "SkipToken": "<paste skipToken here>" }
+}
+```
 
 📖 See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request shape, clause reference, and resource-type table.
 
