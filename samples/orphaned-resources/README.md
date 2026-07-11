@@ -38,7 +38,7 @@ The inventory API gives you each resource's owner ID, but not whether that accou
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/orphaned-resources/query.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/orphaned-resources/query.json)
 
 ## Run it
 
@@ -82,4 +82,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/orphaned-resources/output.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/orphaned-resources/output.json)
