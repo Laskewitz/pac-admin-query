@@ -16,7 +16,7 @@ Who is building the most apps, flows, and agents across the tenant? This groups 
 }
 ```
 
-[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/maker-adoption/query.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/maker-adoption/query.json)
 
 ## Run it
 
@@ -64,4 +64,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/maker-adoption/output.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/maker-adoption/output.json)

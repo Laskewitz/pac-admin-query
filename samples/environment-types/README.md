@@ -41,7 +41,7 @@ Break your environments down by type. A pile of Developer environments usually m
 }
 ```
 
-[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-types/query.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-types/query.json)
 
 ## Run it
 
@@ -81,4 +81,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-types/output.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-types/output.json)
