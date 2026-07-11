@@ -1,4 +1,4 @@
-# 🔍 pac-admin-query
+# 🔍 Query your Power Platform Inventory by using `pac admin query`
 
 > [!NOTE]
 > The bundled `pac-admin-query` agent skill was written by **[Andrew Petrochuk](https://github.com/petrochuk)**. Thanks, Andrew!
