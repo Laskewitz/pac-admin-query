@@ -23,7 +23,8 @@ pac auth select    # activate the right one
 
 ## 🚀 Usage
 
-> **Tip:** Prefer a query file over inline JSON to avoid shell-escaping headaches.
+> [!TIP]
+> Prefer a query file over inline JSON to avoid shell-escaping headaches.
 
 ### 🎛️ Arguments
 
@@ -62,6 +63,7 @@ pac admin query -qf .\query.json -ot Grid -of .\inventory.csv
 pac admin query -qf .\query.json -ot Json -of .\inventory.json
 ```
 
+> [!WARNING]
 > There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. **Stick with `--query-file`**: save the JSON to a `.json` file and point `-qf` at it.
 
 ### 🔐 Pick the right auth profile first
@@ -92,7 +94,8 @@ See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request
 
 These governance-style examples are ones I validated against a live tenant.
 
-> **Heads up:** The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates), **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
+> [!IMPORTANT]
+> The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates), **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
 
 ### 👷 Maker adoption: top makers by resource count
 
@@ -472,7 +475,8 @@ The inventory API gives you each resource's owner ID, but not whether that accou
 
 ### 🧯 Stale connectors: connectors whose usage has gone cold
 
-> **Note:** The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it. A `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
+> [!NOTE]
+> The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it. A `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
 
 ```json
 {
