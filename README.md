@@ -16,6 +16,11 @@ List, filter, count, aggregate, export, and inspect tenant-wide **Power Apps** �
   - [👷 Maker adoption](#-maker-adoption--top-makers-by-resource-count)
   - [🌍 Environment sprawl](#-environment-sprawl--resource-count-per-environment-and-type)
   - [🔌 Connector audit](#-connector-audit--rank-connectors-by-usage)
+  - [🆕 New resources](#-new-resources--created-in-the-last-30-days)
+  - [🛡️ Managed environments](#️-managed-environments--managed-vs-unmanaged)
+  - [📆 Recently used resources](#-recently-used-resources--activity-by-last-used)
+  - [🧹 Unused resources](#-unused-resources--not-used-in-30-days)
+  - [🧯 Stale connectors](#-stale-connectors--connectors-whose-usage-has-gone-cold)
 - [📚 References](#-references)
 
 ---
@@ -23,7 +28,7 @@ List, filter, count, aggregate, export, and inspect tenant-wide **Power Apps** �
 ## ✅ Prerequisites
 
 - 🛠️ A PAC CLI build that includes `pac admin query` (verified with `2.9.3`).
-- 🔐 An active PAC auth profile with tenant context and permission to call the [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api).
+- 🔐 An active PAC auth profile with tenant context and permission to call the [Power Platform inventory API](https://learn.microsoft.com/power-platform/admin/inventory-api).
 
 ```powershell
 pac auth list      # 👀 inspect profiles
@@ -161,9 +166,198 @@ Aggregate every connector used across the tenant to spot premium or risky connec
 }
 ```
 
+### 🆕 New resources — created in the last 30 days
+
+Track growth and spot fresh builds across the tenant. 🌱
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    { "$type": "extend", "FieldName": "Created", "Expression": "todatetime(properties.createdAt)" },
+    { "$type": "where", "FieldName": "Created", "Operator": ">=", "Values": ["ago(30d)"] },
+    {
+      "$type": "project",
+      "FieldList": [
+        "Name = properties.displayName",
+        "Type = type",
+        "Created",
+        "Owner = properties.ownerId"
+      ]
+    },
+    { "$type": "orderby", "FieldNamesAscDesc": { "Created": "desc" } }
+  ]
+}
+```
+
+### 🛡️ Managed environments — managed vs unmanaged
+
+Count how many environments are Managed Environments versus not. ⚖️
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatform/environments'"] },
+    { "$type": "extend", "FieldName": "IsManaged", "Expression": "tostring(properties.isManaged)" },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "EnvironmentCount",
+        "FieldList": ["IsManaged"]
+      }
+    },
+    { "$type": "orderby", "FieldNamesAscDesc": { "EnvironmentCount": "desc" } }
+  ]
+}
+```
+
+### 📆 Recently used resources — activity by last used
+
+The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carrying `properties.lastUsed` and `properties.resourceId` — **real usage telemetry**. Join it back to the resource to see the friendly name, newest activity first. 🔥
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
+    { "$type": "extend", "FieldName": "LastUsed", "Expression": "todatetime(properties.lastUsed)" },
+    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(properties.resourceId))" },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(name)",
+              "ResourceName = properties.displayName",
+              "ResourceType = type"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    { "$type": "project", "FieldList": ["ResourceName", "ResourceType", "LastUsed"] },
+    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "desc" } }
+  ]
+}
+```
+
+### 🧹 Unused resources — not used in 30+ days
+
+Flip the usage query around: surface resources whose last activity is older than 30 days — cleanup candidates backed by actual usage, not just modified dates. 🗑️
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
+    { "$type": "extend", "FieldName": "LastUsed", "Expression": "todatetime(properties.lastUsed)" },
+    { "$type": "where", "FieldName": "LastUsed", "Operator": "<", "Values": ["ago(30d)"] },
+    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(properties.resourceId))" },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(name)",
+              "ResourceName = properties.displayName",
+              "ResourceType = type",
+              "Owner = properties.ownerId"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    { "$type": "project", "FieldList": ["ResourceName", "ResourceType", "LastUsed", "Owner"] },
+    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "asc" } }
+  ]
+}
+```
+
+### 🧯 Stale connectors — connectors whose usage has gone cold
+
+> ℹ️ **Note:** The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it — a `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical — see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(name))" },
+    { "$type": "extend", "FieldName": "ppc", "Expression": "properties.powerPlatformConnectors" },
+    { "$type": "mvexpand", "FieldList": ["ppc"] },
+    { "$type": "extend", "FieldName": "ConnectorId", "Expression": "tostring(ppc.connectorId)" },
+    { "$type": "where", "FieldName": "ConnectorId", "Operator": "!=", "Values": ["''"] },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(tostring(properties.resourceId))",
+              "LastUsed = todatetime(properties.lastUsed)"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "argmax",
+        "OperatorFieldName": "LastUsed",
+        "FieldList": ["ConnectorId"]
+      }
+    },
+    { "$type": "project", "FieldList": ["ConnectorId", "LastUsed"] },
+    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "asc" } }
+  ]
+}
+```
+
 ---
 
 ## 📚 References
 
-- 🌐 [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api)
-- 🧬 [Power Platform inventory schema](https://learn.microsoft.com/en-us/power-platform/admin/inventory-schema)
+- 🌐 [Power Platform inventory API](https://learn.microsoft.com/power-platform/admin/inventory-api)
+- 🧬 [Power Platform inventory schema](https://learn.microsoft.com/power-platform/admin/inventory-schema)

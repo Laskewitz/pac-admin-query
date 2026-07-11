@@ -9,8 +9,8 @@ Use `pac admin query` to query the tenant-wide Power Platform inventory API.
 
 Documentation:
 
-- [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api)
-- [Power Platform inventory schema](https://learn.microsoft.com/en-us/power-platform/admin/inventory-schema)
+- [Power Platform inventory API](https://learn.microsoft.com/power-platform/admin/inventory-api)
+- [Power Platform inventory schema](https://learn.microsoft.com/power-platform/admin/inventory-schema)
 
 ## Prerequisites
 
@@ -80,7 +80,7 @@ Common clause types:
 - `summarize`: aggregate records.
 - `join`: enrich records with another inventory query.
 
-The documented clause and `summarize` operator surface is limited. The [inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api) lists these clause types plus `where`, `project`, `extend`, `orderby`, `take`, and documents only `count` and `argmax` as `summarize` operators. The advanced connector example additionally uses `mvexpand` and the `make_set` summarize operator, which are **not documented** but work empirically against the live API. Treat them as experimental.
+The documented clause and `summarize` operator surface is limited. The [inventory API](https://learn.microsoft.com/power-platform/admin/inventory-api) lists these clause types plus `where`, `project`, `extend`, `orderby`, `take`, and documents only `count` and `argmax` as `summarize` operators. The advanced connector example additionally uses `mvexpand` and the `make_set` summarize operator, which are **not documented** but work empirically against the live API. Treat them as experimental.
 
 Values are KQL expressions serialized as JSON strings. Preserve required KQL quoting, for example:
 
@@ -104,7 +104,7 @@ Values are KQL expressions serialized as JSON strings. Preserve required KQL quo
 
 The advanced connector example uses `mvexpand` and `make_set`. Reuse that known query shape for connector aggregation rather than inventing new unsupported clause forms.
 
-The `subType` filter in the recent-resources and connector examples lists `appBuilderApp`, `copilotCanvasApp`, `byocApp`, `vibeApp`, `powerAppsApp`, and `''` (empty, for resource types without a subtype). Per the [inventory schema](https://learn.microsoft.com/en-us/power-platform/admin/inventory-schema), only `appBuilderApp`, `byocApp`, and `vibeApp` are documented; `copilotCanvasApp` and `powerAppsApp` are empirical. Adjust the list to the subtypes you actually want, and don't drop `vibeApp` if you need code apps.
+The `subType` filter in the recent-resources and connector examples lists `appBuilderApp`, `copilotCanvasApp`, `byocApp`, `vibeApp`, `powerAppsApp`, and `''` (empty, for resource types without a subtype). Per the [inventory schema](https://learn.microsoft.com/power-platform/admin/inventory-schema), only `appBuilderApp`, `byocApp`, and `vibeApp` are documented; `copilotCanvasApp` and `powerAppsApp` are empirical. Adjust the list to the subtypes you actually want, and don't drop `vibeApp` if you need code apps.
 
 ## Resource Types
 
