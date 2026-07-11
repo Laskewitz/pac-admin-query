@@ -7,8 +7,6 @@ Version `2.9.3` of the Power Platform CLI added a new command, `pac admin query`
 
 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
 
----
-
 ## ✅ Prerequisites
 
 - A PAC CLI build that includes `pac admin query` (verified with `2.9.3`).
@@ -18,8 +16,6 @@ The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admi
 pac auth list      # inspect profiles
 pac auth select    # activate the right one
 ```
-
----
 
 ## 🚀 Usage
 
@@ -87,8 +83,6 @@ pac auth who                                                 # confirm the activ
 ```
 
 See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request shape, clause reference, and resource-type table.
-
----
 
 ## 💡 Example queries
 
@@ -530,8 +524,6 @@ The inventory API gives you each resource's owner ID, but not whether that accou
   ]
 }
 ```
-
----
 
 ## 📚 References
 
