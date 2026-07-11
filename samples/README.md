@@ -36,6 +36,7 @@ pac admin query --query-file samples/<folder>/query.json --output-type <Grid|Lis
 | --- | --- | --- |
 | [`connector-audit/`](./connector-audit/README.md) | Which connectors are used most across the tenant? | [`output.json`](./connector-audit/output.json) |
 | [`stale-connectors/`](./stale-connectors/README.md) | Which connectors are only used by dormant resources? | [`output.json`](./stale-connectors/output.json) |
+| [`connectors-per-environment/`](./connectors-per-environment/README.md) | Which connectors are used in each environment, and how often? | [`output.json`](./connectors-per-environment/output.json) |
 
 ## 📊 Usage
 

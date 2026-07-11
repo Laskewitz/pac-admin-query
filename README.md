@@ -134,6 +134,7 @@ Every query below has its own folder under [`samples/`](./samples/README.md) wit
 | --- | --- |
 | [Connector audit](./samples/connector-audit/README.md) | Which connectors are used most across the tenant? |
 | [Stale connectors](./samples/stale-connectors/README.md) | Which connectors are only referenced by dormant resources? |
+| [Connectors per environment](./samples/connectors-per-environment/README.md) | Which connectors are used in each environment, and how often? |
 
 ### 📊 Usage
 
