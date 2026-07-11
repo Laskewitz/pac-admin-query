@@ -2,6 +2,9 @@
 
 > A [GitHub Copilot](https://github.com/features/copilot) agent **skill** for building and running **Power Platform inventory** queries with `pac admin query`.
 
+> [!NOTE]
+> 🙌 **Credits** — the original `pac-admin-query` skill was created by **[@petrochuk](https://github.com/petrochuk)**. This repo packages, documents, and extends it. Thank you! 💜
+
 List, filter, count, aggregate, export, and inspect tenant-wide **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 — all from the command line.
 
 📦 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
