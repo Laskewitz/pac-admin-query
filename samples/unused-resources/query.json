@@ -1,0 +1,66 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "==",
+      "Values": [
+        "'microsoft.powerplatformusage/usagerecords'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "LastUsed",
+      "Expression": "todatetime(properties.lastUsed)"
+    },
+    {
+      "$type": "where",
+      "FieldName": "LastUsed",
+      "Operator": "<",
+      "Values": [
+        "ago(30d)"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "joinKey",
+      "Expression": "tolower(tostring(properties.resourceId))"
+    },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(name)",
+              "ResourceName = properties.displayName",
+              "ResourceType = type",
+              "Owner = properties.ownerId"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "ResourceName",
+        "ResourceType",
+        "LastUsed",
+        "Owner"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "LastUsed": "asc"
+      }
+    }
+  ]
+}

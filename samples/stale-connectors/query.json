@@ -1,0 +1,94 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "joinKey",
+      "Expression": "tolower(tostring(name))"
+    },
+    {
+      "$type": "extend",
+      "FieldName": "ppc",
+      "Expression": "properties.powerPlatformConnectors"
+    },
+    {
+      "$type": "mvexpand",
+      "FieldList": [
+        "ppc"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "ConnectorId",
+      "Expression": "tostring(ppc.connectorId)"
+    },
+    {
+      "$type": "where",
+      "FieldName": "ConnectorId",
+      "Operator": "!=",
+      "Values": [
+        "''"
+      ]
+    },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "where",
+            "FieldName": "type",
+            "Operator": "==",
+            "Values": [
+              "'microsoft.powerplatformusage/usagerecords'"
+            ]
+          },
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(tostring(properties.resourceId))",
+              "LastUsed = todatetime(properties.lastUsed)"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "argmax",
+        "OperatorFieldName": "LastUsed",
+        "FieldList": [
+          "ConnectorId"
+        ]
+      }
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "ConnectorId",
+        "LastUsed"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "LastUsed": "asc"
+      }
+    }
+  ]
+}

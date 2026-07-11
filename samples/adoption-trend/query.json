@@ -1,0 +1,37 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "Month",
+      "Expression": "startofmonth(todatetime(properties.createdAt))"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": [
+          "Month"
+        ]
+      }
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "Month": "asc"
+      }
+    }
+  ]
+}

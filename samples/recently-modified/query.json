@@ -1,0 +1,43 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "Modified",
+      "Expression": "todatetime(properties.lastModifiedAt)"
+    },
+    {
+      "$type": "where",
+      "FieldName": "Modified",
+      "Operator": ">=",
+      "Values": [
+        "ago(7d)"
+      ]
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "Name = properties.displayName",
+        "Type = type",
+        "Modified"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "Modified": "desc"
+      }
+    }
+  ]
+}

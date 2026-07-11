@@ -1,0 +1,77 @@
+{
+  "totalRecords": 17,
+  "count": 17,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "ConnectorId": "shared_rss",
+      "LastUsed": null
+    },
+    {
+      "ConnectorId": "shared_customconnector1",
+      "LastUsed": null
+    },
+    {
+      "ConnectorId": "shared_wordonlinebusiness",
+      "LastUsed": "2026-06-24T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_advancedapprovals",
+      "LastUsed": "2026-06-25T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_msnweather",
+      "LastUsed": "2026-06-28T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_a365copilotchatmcp",
+      "LastUsed": "2026-06-30T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_a365memcp",
+      "LastUsed": "2026-06-30T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_powertools",
+      "LastUsed": "2026-07-09T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_sharepointonline",
+      "LastUsed": "2026-07-09T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_agentnode",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_commondataserviceforapps",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_office365",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_uiflow",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_microsoftcopilotstudio",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_onenote",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_teams",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    },
+    {
+      "ConnectorId": "shared_computeroperator",
+      "LastUsed": "2026-07-10T23:59:59Z"
+    }
+  ],
+  "facets": []
+}

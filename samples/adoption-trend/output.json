@@ -1,0 +1,17 @@
+{
+  "totalRecords": 2,
+  "count": 2,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "Month": "2026-06-01T00:00:00Z",
+      "ResourceCount": 111
+    },
+    {
+      "Month": "2026-07-01T00:00:00Z",
+      "ResourceCount": 383
+    }
+  ],
+  "facets": []
+}

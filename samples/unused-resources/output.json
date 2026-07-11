@@ -1,0 +1,117 @@
+{
+  "totalRecords": 18,
+  "count": 18,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-09T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": "Sample resource 258",
+      "ResourceType": "microsoft.copilotstudio/agents",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000015"
+    },
+    {
+      "ResourceName": "Sample resource 185",
+      "ResourceType": "microsoft.copilotstudio/agents",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000015"
+    },
+    {
+      "ResourceName": "Sample resource 259",
+      "ResourceType": "microsoft.copilotstudio/agents",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000015"
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    },
+    {
+      "ResourceName": null,
+      "ResourceType": "",
+      "LastUsed": "2026-06-10T23:59:59Z",
+      "Owner": null
+    }
+  ],
+  "facets": []
+}

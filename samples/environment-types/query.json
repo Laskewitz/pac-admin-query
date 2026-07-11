@@ -1,0 +1,34 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "==",
+      "Values": [
+        "'microsoft.powerplatform/environments'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "EnvironmentType",
+      "Expression": "tostring(properties.environmentType)"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "EnvironmentCount",
+        "FieldList": [
+          "EnvironmentType"
+        ]
+      }
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "EnvironmentCount": "desc"
+      }
+    }
+  ]
+}

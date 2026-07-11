@@ -1,0 +1,13 @@
+{
+  "totalRecords": 1,
+  "count": 1,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "Region": "unitedstates",
+      "EnvironmentCount": 19
+    }
+  ],
+  "facets": []
+}

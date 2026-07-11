@@ -1,0 +1,38 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "EnvId",
+      "Expression": "tostring(properties.environmentId)"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": [
+          "EnvId",
+          "type"
+        ]
+      }
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "ResourceCount": "desc"
+      }
+    }
+  ]
+}

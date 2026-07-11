@@ -1,0 +1,44 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "Created",
+      "Expression": "todatetime(properties.createdAt)"
+    },
+    {
+      "$type": "where",
+      "FieldName": "Created",
+      "Operator": ">=",
+      "Values": [
+        "ago(30d)"
+      ]
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "Name = properties.displayName",
+        "Type = type",
+        "Created",
+        "Owner = properties.ownerId"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "Created": "desc"
+      }
+    }
+  ]
+}
