@@ -1,0 +1,77 @@
+{
+  "totalRecords": 17,
+  "count": 17,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "ConnectorId": "shared_agentnode",
+      "UsageCount": 386
+    },
+    {
+      "ConnectorId": "shared_commondataserviceforapps",
+      "UsageCount": 42
+    },
+    {
+      "ConnectorId": "shared_advancedapprovals",
+      "UsageCount": 22
+    },
+    {
+      "ConnectorId": "shared_office365",
+      "UsageCount": 18
+    },
+    {
+      "ConnectorId": "shared_computeroperator",
+      "UsageCount": 17
+    },
+    {
+      "ConnectorId": "shared_sharepointonline",
+      "UsageCount": 8
+    },
+    {
+      "ConnectorId": "shared_microsoftcopilotstudio",
+      "UsageCount": 7
+    },
+    {
+      "ConnectorId": "shared_teams",
+      "UsageCount": 5
+    },
+    {
+      "ConnectorId": "shared_msnweather",
+      "UsageCount": 3
+    },
+    {
+      "ConnectorId": "shared_powertools",
+      "UsageCount": 2
+    },
+    {
+      "ConnectorId": "shared_customconnector1",
+      "UsageCount": 2
+    },
+    {
+      "ConnectorId": "shared_onenote",
+      "UsageCount": 2
+    },
+    {
+      "ConnectorId": "shared_a365memcp",
+      "UsageCount": 1
+    },
+    {
+      "ConnectorId": "shared_rss",
+      "UsageCount": 1
+    },
+    {
+      "ConnectorId": "shared_a365copilotchatmcp",
+      "UsageCount": 1
+    },
+    {
+      "ConnectorId": "shared_wordonlinebusiness",
+      "UsageCount": 1
+    },
+    {
+      "ConnectorId": "shared_uiflow",
+      "UsageCount": 1
+    }
+  ],
+  "facets": []
+}

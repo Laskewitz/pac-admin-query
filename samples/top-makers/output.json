@@ -1,0 +1,33 @@
+{
+  "totalRecords": 6,
+  "count": 6,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000001",
+      "ResourceCount": 414
+    },
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000002",
+      "ResourceCount": 57
+    },
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000003",
+      "ResourceCount": 33
+    },
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000004",
+      "ResourceCount": 29
+    },
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000005",
+      "ResourceCount": 24
+    },
+    {
+      "Maker": "aaaaaaaa-bbbb-cccc-dddd-000000000006",
+      "ResourceCount": 3
+    }
+  ],
+  "facets": []
+}

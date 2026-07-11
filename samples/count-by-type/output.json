@@ -1,0 +1,59 @@
+{
+  "totalRecords": 10,
+  "count": 10,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "type": "microsoft.powerplatformusage/usagerecords",
+      "location": "unitedstates",
+      "ResourceCount": 2352
+    },
+    {
+      "type": "microsoft.powerplatformconnector/connectors",
+      "location": "unitedstates",
+      "ResourceCount": 1593
+    },
+    {
+      "type": "microsoft.powerautomate/cloudflows",
+      "location": "westus",
+      "ResourceCount": 231
+    },
+    {
+      "type": "microsoft.powerautomate/agentflows",
+      "location": "westus",
+      "ResourceCount": 217
+    },
+    {
+      "type": "microsoft.powerapps/modeldrivenapps",
+      "location": "unitedstates",
+      "ResourceCount": 66
+    },
+    {
+      "type": "microsoft.copilotstudio/agents",
+      "location": "unitedstates",
+      "ResourceCount": 46
+    },
+    {
+      "type": "microsoft.powerplatform/environments",
+      "location": "unitedstates",
+      "ResourceCount": 19
+    },
+    {
+      "type": "microsoft.powerapps/codeapps",
+      "location": "unitedstates",
+      "ResourceCount": 4
+    },
+    {
+      "type": "microsoft.powerapps/apps",
+      "location": "unitedstates",
+      "ResourceCount": 1
+    },
+    {
+      "type": "microsoft.powerplatform/environmentgroups",
+      "location": "unitedstates",
+      "ResourceCount": 1
+    }
+  ],
+  "facets": []
+}
