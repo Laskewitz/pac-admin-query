@@ -54,6 +54,8 @@ Track growth by listing everything created in the last 30 days, newest first.
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/new-resources/query.json)
+
 ## Run it
 
 ```bash
@@ -195,3 +197,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/new-resources/output.json)

@@ -53,6 +53,8 @@ Watch for churn. This surfaces everything touched in the past week, newest first
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/recently-modified/query.json)
+
 ## Run it
 
 ```bash
@@ -174,3 +176,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/recently-modified/output.json)

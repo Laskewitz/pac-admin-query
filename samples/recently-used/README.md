@@ -21,6 +21,8 @@ The tenant exposes a `microsoft.powerplatformusage/usagerecords` type carrying `
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/recently-used/query.json)
+
 ## Run it
 
 ```bash
@@ -142,3 +144,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/recently-used/output.json)

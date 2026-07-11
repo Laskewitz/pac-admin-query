@@ -73,6 +73,8 @@ Flip the usage query around and surface resources whose last activity is older t
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/query.json)
+
 ## Run it
 
 ```bash
@@ -202,3 +204,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/output.json)

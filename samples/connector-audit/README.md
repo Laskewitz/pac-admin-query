@@ -19,6 +19,8 @@ Aggregate every connector used across the tenant so premium or risky connectors 
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/connector-audit/query.json)
+
 ## Run it
 
 ```bash
@@ -108,3 +110,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/connector-audit/output.json)
