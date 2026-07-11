@@ -1,9 +1,11 @@
 # 🔍 pac-admin-query
 
 > [!NOTE]
-> 🙌 The original `pac-admin-query` skill was made by **[@petrochuk](https://github.com/petrochuk)**. This repo wraps it with docs and a few extra example queries. Thanks! 💜
+> 🙌 The bundled `pac-admin-query` agent skill was written by **[Andrew Petrochuk](https://github.com/petrochuk)**. Thanks, Andrew! 💜
 
-A [GitHub Copilot](https://github.com/features/copilot) skill for querying your tenant-wide Power Platform inventory with `pac admin query`. Use it to list, count, and export **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 from the command line.
+Version `2.9.3` of the Power Platform CLI added a new command, `pac admin query`, for querying your tenant-wide Power Platform inventory. This repo gives you working sample queries for it, and it bundles an agent skill by [Andrew Petrochuk](https://github.com/petrochuk) so [GitHub Copilot](https://github.com/features/copilot) can build and run them for you.
+
+Query **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 straight from the command line.
 
 📦 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
 
