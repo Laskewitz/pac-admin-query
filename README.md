@@ -161,8 +161,6 @@ Aggregate every connector used across the tenant to spot premium or risky connec
 }
 ```
 
-✨ More examples ship in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/), including environment inventory, resource counts by type/location, and an advanced query that joins environment and environment-group details with aggregated connectors.
-
 ---
 
 ## 📚 References
