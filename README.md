@@ -331,6 +331,41 @@ Flip the usage query around: surface resources whose last activity is older than
 }
 ```
 
+### 🧑‍🦲 Orphaned resources — owners to cross-check against deleted accounts
+
+The inventory API gives you each resource's owner ID, but not whether that account still exists in Entra ID. So you can't ask it for "orphaned" resources directly. What you *can* do is group everything by owner and export the list, then diff those owner IDs against your disabled or deleted accounts. Anything owned by an account that's gone is orphaned. 🕵️
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    { "$type": "extend", "FieldName": "Owner", "Expression": "tostring(properties.ownerId)" },
+    { "$type": "where", "FieldName": "Owner", "Operator": "!=", "Values": ["''"] },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": ["Owner"]
+      }
+    },
+    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
+  ]
+}
+```
+
 ### 🧯 Stale connectors — connectors whose usage has gone cold
 
 > ℹ️ **Note:** The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it — a `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical — see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).

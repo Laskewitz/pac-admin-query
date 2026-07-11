@@ -1,0 +1,28 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    { "$type": "extend", "FieldName": "Owner", "Expression": "tostring(properties.ownerId)" },
+    { "$type": "where", "FieldName": "Owner", "Operator": "!=", "Values": ["''"] },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": ["Owner"]
+      }
+    },
+    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
+  ]
+}

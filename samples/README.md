@@ -14,6 +14,7 @@ pac admin query --query-file samples/<folder>/query.json --output-type <Grid|Lis
 | [`environments/`](./environments/) | What environments exist, and their type/managed state/group? | `pac admin query -qf samples/environments/query.json -ot Grid -of output.csv` | [`output.csv`](./environments/output.csv) |
 | [`top-makers/`](./top-makers/) | Who owns the most resources? | `pac admin query -qf samples/top-makers/query.json -ot Json -of output.json` | [`output.json`](./top-makers/output.json) |
 | [`connector-audit/`](./connector-audit/) | Which connectors are used most across resources? | `pac admin query -qf samples/connector-audit/query.json -ot Json -of output.json` | [`output.json`](./connector-audit/output.json) |
+| [`orphaned-resources/`](./orphaned-resources/) | Which owners hold resources (to diff against deleted accounts)? | `pac admin query -qf samples/orphaned-resources/query.json -ot Json -of output.json` | [`output.json`](./orphaned-resources/output.json) |
 | [`recently-used/`](./recently-used/) | What was used recently (usage telemetry joined to names)? | `pac admin query -qf samples/recently-used/query.json -ot Json -of output.json` | [`output.json`](./recently-used/output.json) |
 
 > ℹ️ `recently-used/output.json` is truncated to 20 rows for readability (`totalRecords` shows the real total).
