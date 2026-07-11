@@ -6,7 +6,7 @@ Each folder contains a ready-to-run **`query.json`** input and a matching **sani
 pac admin query --query-file samples/<folder>/query.json --output-type <Grid|List|Json>
 ```
 
-> 🔒 **Outputs are sanitized.** GUIDs are replaced with deterministic `aaaaaaaa-bbbb-cccc-dddd-…` placeholders, display names with `Contoso …` / `Sample …`, and custom connector IDs with `shared_customconnector…`. Standard `shared_*` connectors, resource types, locations, counts, and timestamps are kept as-is. They illustrate shape and scale, not real tenant data.
+> 🔒 **Outputs are sanitized.** GUIDs are replaced with deterministic `aaaaaaaa-bbbb-cccc-dddd-…` placeholders, display names with `Contoso …` / `Sample …`, and custom connector IDs with `shared_customconnector…`. Standard `shared_*` connectors, resource types, locations, counts, and timestamps are left as-is. The point is to show what real results look like without exposing anyone's actual tenant.
 
 | 📁 Folder | ❓ Question it answers | ▶️ Command | 📤 Output |
 |-----------|----------------------|-----------|-----------|
