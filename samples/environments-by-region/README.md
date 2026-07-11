@@ -41,6 +41,8 @@ Count environments per region. On a single-geo tenant this is one row, but acros
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environments-by-region/query.json)
+
 ## Run it
 
 ```bash
@@ -66,3 +68,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environments-by-region/output.json)

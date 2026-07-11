@@ -104,6 +104,8 @@ Rank each connector by the most recent activity of any resource that uses it. A 
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/stale-connectors/query.json)
+
 ## Run it
 
 ```bash
@@ -193,3 +195,5 @@ Sanitized excerpt from a live tenant.
   "facets": []
 }
 ```
+
+[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/stale-connectors/output.json)

@@ -44,6 +44,8 @@ List every environment with its region, type, managed state, and group in one fl
 }
 ```
 
+[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environments/query.json)
+
 ## Run it
 
 ```bash
@@ -76,3 +78,5 @@ aaaaaaaa-bbbb-cccc-dddd-000000000024,Contoso Environment 17,unitedstates,Sandbox
 aaaaaaaa-bbbb-cccc-dddd-000000000025,Contoso Environment 18,unitedstates,Sandbox,False,,,2026-06-08T15:02:37.7718538Z
 aaaaaaaa-bbbb-cccc-dddd-000000000026,Contoso Environment 19,unitedstates,Sandbox,False,,,2026-06-28T23:20:02.7475268Z
 ```
+
+[`output.csv` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environments/output.csv)
