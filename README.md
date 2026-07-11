@@ -62,7 +62,7 @@ pac admin query -qf .\query.json -ot Grid -of .\inventory.csv
 pac admin query -qf .\query.json -ot Json -of .\inventory.json
 ```
 
-> There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. **Stick with `--query-file`** — save the JSON to a `.json` file and point `-qf` at it.
+> There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. **Stick with `--query-file`**: save the JSON to a `.json` file and point `-qf` at it.
 
 ### 🔐 Pick the right auth profile first
 
@@ -74,7 +74,7 @@ pac auth who                                                 # confirm the activ
 
 ### 📄 Paginating large result sets
 
-`Grid`/`List` cap what they print. For big exports, use `Json` and follow the `skipToken`: when the response has a non-empty `skipToken`, copy it into `Options.SkipToken` in your query file and rerun to fetch the next page — keep every other clause unchanged.
+`Grid`/`List` cap what they print. For big exports, use `Json` and follow the `skipToken`: when the response has a non-empty `skipToken`, copy it into `Options.SkipToken` in your query file and rerun to fetch the next page, keeping every other clause unchanged.
 
 ```jsonc
 {
@@ -92,9 +92,9 @@ See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request
 
 These governance-style examples are ones I validated against a live tenant.
 
-> **Heads up:** The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates) — **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
+> **Heads up:** The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates), **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
 
-### 👷 Maker adoption — top makers by resource count
+### 👷 Maker adoption: top makers by resource count
 
 Who is building the most apps, flows, and agents across the tenant?
 
@@ -128,7 +128,7 @@ Who is building the most apps, flows, and agents across the tenant?
 }
 ```
 
-### 🌍 Environment sprawl — resource count per environment and type
+### 🌍 Environment sprawl: resource count per environment and type
 
 Break down how many resources of each type live in each environment.
 
@@ -161,9 +161,9 @@ Break down how many resources of each type live in each environment.
 }
 ```
 
-### 🔌 Connector audit — rank connectors by usage
+### 🔌 Connector audit: rank connectors by usage
 
-Aggregate every connector used across the tenant to spot premium or risky connectors. Uses `mvexpand` + `summarize` (empirical clauses — see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
+Aggregate every connector used across the tenant to spot premium or risky connectors. Uses `mvexpand` + `summarize` (empirical clauses, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
 
 ```json
 {
@@ -197,7 +197,7 @@ Aggregate every connector used across the tenant to spot premium or risky connec
 }
 ```
 
-### 🆕 New resources — created in the last 30 days
+### 🆕 New resources: created in the last 30 days
 
 Track growth and see what's been built lately.
 
@@ -232,7 +232,7 @@ Track growth and see what's been built lately.
 }
 ```
 
-### 📈 Adoption trend — resources created per month
+### 📈 Adoption trend: resources created per month
 
 Bin every app, flow, and agent by the month it was created to see how fast the tenant is growing over time.
 
@@ -265,7 +265,7 @@ Bin every app, flow, and agent by the month it was created to see how fast the t
 }
 ```
 
-### ✏️ Recently modified — changed in the last 7 days
+### ✏️ Recently modified: changed in the last 7 days
 
 Watch for churn. This surfaces everything touched in the past week, newest first, which is handy for spotting active development or unexpected changes.
 
@@ -292,7 +292,7 @@ Watch for churn. This surfaces everything touched in the past week, newest first
 }
 ```
 
-### 🛡️ Managed environments — managed vs unmanaged
+### 🛡️ Managed environments: managed vs unmanaged
 
 Count how many environments are Managed Environments versus not.
 
@@ -315,7 +315,7 @@ Count how many environments are Managed Environments versus not.
 }
 ```
 
-### 🏷️ Environment types — production, sandbox, developer, and more
+### 🏷️ Environment types: production, sandbox, developer, and more
 
 Break your environments down by type. A pile of Developer environments usually means everyone spun up their own, which is worth knowing before you tighten governance.
 
@@ -338,7 +338,7 @@ Break your environments down by type. A pile of Developer environments usually m
 }
 ```
 
-### 🌐 Environments by region — where your data lives
+### 🌐 Environments by region: where your data lives
 
 Count environments per region. On a single-geo tenant this is one row, but if you operate across geographies it's a quick data-residency check.
 
@@ -361,9 +361,9 @@ Count environments per region. On a single-geo tenant this is one row, but if yo
 }
 ```
 
-### 📆 Recently used resources — activity by last used
+### 📆 Recently used resources: activity by last used
 
-The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carrying `properties.lastUsed` and `properties.resourceId` — **real usage telemetry**. Join it back to the resource to see the friendly name, newest activity first.
+The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carrying `properties.lastUsed` and `properties.resourceId`, giving you **real usage telemetry**. Join it back to the resource to see the friendly name, newest activity first.
 
 ```json
 {
@@ -397,7 +397,7 @@ The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carry
 }
 ```
 
-### 🧹 Unused resources — not used in 30+ days
+### 🧹 Unused resources: not used in 30+ days
 
 Flip the usage query around: surface resources whose last activity is older than 30 days. These are cleanup candidates based on real usage rather than just modified dates.
 
@@ -435,7 +435,7 @@ Flip the usage query around: surface resources whose last activity is older than
 }
 ```
 
-### 🧑‍🦲 Orphaned resources — owners to cross-check against deleted accounts
+### 🧑‍🦲 Orphaned resources: owners to cross-check against deleted accounts
 
 The inventory API gives you each resource's owner ID, but not whether that account still exists in Entra ID. So you can't ask it for "orphaned" resources directly. What you *can* do is group everything by owner and export the list, then diff those owner IDs against your disabled or deleted accounts. Anything owned by an account that's gone is orphaned.
 
@@ -470,9 +470,9 @@ The inventory API gives you each resource's owner ID, but not whether that accou
 }
 ```
 
-### 🧯 Stale connectors — connectors whose usage has gone cold
+### 🧯 Stale connectors: connectors whose usage has gone cold
 
-> **Note:** The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it — a `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical — see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
+> **Note:** The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it. A `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
 
 ```json
 {
