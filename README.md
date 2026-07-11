@@ -1,7 +1,7 @@
 # 🔍 Query your Power Platform Inventory
 
 > [!NOTE]
-> The bundled `pac-admin-query` agent skill was written by **[Andrew Petrochuk](https://github.com/petrochuk)**. Thanks, Andrew!
+> The bundled `pac-admin-query` agent skill was written by [Andrew Petrochuk](https://github.com/petrochuk). Thanks, Andrew!
 
 Version `2.9.3` of the Power Platform CLI added a new command, `pac admin query`, for querying your tenant-wide Power Platform inventory. This repo gives you working sample queries for it, and it bundles an agent skill by [Andrew Petrochuk](https://github.com/petrochuk) so [GitHub Copilot](https://github.com/features/copilot) can build and run them for you.
 
@@ -39,28 +39,44 @@ pac auth select    # activate the right one
 
 ### 🖥️ Command samples
 
+Run a query file and print a Grid table to the console (the default output type):
+
 ```powershell
-# Run a query file, print a Grid table to the console (default output type)
 pac admin query --query-file .\query.json
-pac admin query -qf .\query.json                             # same, using the alias
+```
 
-# Full JSON (metadata, nested props, pagination token) to the console
-pac admin query --query-file .\query.json --output-type Json
-pac admin query -qf .\query.json -ot Json                    # alias form
+The `-qf` alias does the same thing:
 
-# Simple line-per-field List output
+```powershell
+pac admin query -qf .\query.json
+```
+
+Get the full JSON response, with metadata, nested props, and the pagination token:
+
+```powershell
+pac admin query -qf .\query.json -ot Json
+```
+
+Print simple line-per-field List output:
+
+```powershell
 pac admin query -qf .\query.json -ot List
+```
 
-# Export a CSV file (Grid + --output-file)
-pac admin query --query-file .\query.json --output-type Grid --output-file .\inventory.csv
+Export a CSV file (Grid plus `--output-file`):
+
+```powershell
 pac admin query -qf .\query.json -ot Grid -of .\inventory.csv
+```
 
-# Export the raw JSON response to a file
+Export the raw JSON response to a file:
+
+```powershell
 pac admin query -qf .\query.json -ot Json -of .\inventory.json
 ```
 
 > [!WARNING]
-> There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. **Stick with `--query-file`**: save the JSON to a `.json` file and point `-qf` at it.
+> There's also an inline `--query` / `-q` flag, but shell quoting around the JSON (especially the `$type` keys) frequently trips it up. Stick with `--query-file`: save the JSON to a `.json` file and point `-qf` at it.
 
 ### 🔐 Pick the right auth profile first
 
@@ -86,444 +102,28 @@ See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request
 
 ## 💡 Example queries
 
-These governance-style examples are ones I validated against a live tenant.
+Every query below has its own folder under [`samples/`](./samples/) with a runnable `query.json`, a sanitized output captured from a live tenant, and a short write-up. Open a sample to see the full query and results.
 
 > [!IMPORTANT]
-> The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates), **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
+> The inventory API exposes resource structure (owner, environment, connectors, created and modified dates), not run or launch telemetry or Entra account status. So treat "stale" as not recently modified rather than unused, and confirm "orphaned" ownership separately.
 
-### 👷 Maker adoption: top makers by resource count
-
-Who is building the most apps, flows, and agents across the tenant?
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerapps/modeldrivenapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "Maker", "Expression": "tostring(properties.createdBy)" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "ResourceCount",
-        "FieldList": ["Maker"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
-  ]
-}
-```
-
-### 🌍 Environment sprawl: resource count per environment and type
-
-Break down how many resources of each type live in each environment.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "EnvId", "Expression": "tostring(properties.environmentId)" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "ResourceCount",
-        "FieldList": ["EnvId", "type"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
-  ]
-}
-```
-
-### 🔌 Connector audit: rank connectors by usage
-
-Aggregate every connector used across the tenant to spot premium or risky connectors. Uses `mvexpand` + `summarize` (empirical clauses, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "ppc", "Expression": "properties.powerPlatformConnectors" },
-    { "$type": "mvexpand", "FieldList": ["ppc"] },
-    { "$type": "extend", "FieldName": "ConnectorId", "Expression": "tostring(ppc.connectorId)" },
-    { "$type": "where", "FieldName": "ConnectorId", "Operator": "!=", "Values": ["''"] },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "UsageCount",
-        "FieldList": ["ConnectorId"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "UsageCount": "desc" } }
-  ]
-}
-```
-
-### 🆕 New resources: created in the last 30 days
-
-Track growth and see what's been built lately.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "Created", "Expression": "todatetime(properties.createdAt)" },
-    { "$type": "where", "FieldName": "Created", "Operator": ">=", "Values": ["ago(30d)"] },
-    {
-      "$type": "project",
-      "FieldList": [
-        "Name = properties.displayName",
-        "Type = type",
-        "Created",
-        "Owner = properties.ownerId"
-      ]
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "Created": "desc" } }
-  ]
-}
-```
-
-### 📈 Adoption trend: resources created per month
-
-Bin every app, flow, and agent by the month it was created to see how fast the tenant is growing over time.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "Month", "Expression": "startofmonth(todatetime(properties.createdAt))" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "ResourceCount",
-        "FieldList": ["Month"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "Month": "asc" } }
-  ]
-}
-```
-
-### ✏️ Recently modified: changed in the last 7 days
-
-Watch for churn. This surfaces everything touched in the past week, newest first, which is handy for spotting active development or unexpected changes.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "Modified", "Expression": "todatetime(properties.lastModifiedAt)" },
-    { "$type": "where", "FieldName": "Modified", "Operator": ">=", "Values": ["ago(7d)"] },
-    { "$type": "project", "FieldList": ["Name = properties.displayName", "Type = type", "Modified"] },
-    { "$type": "orderby", "FieldNamesAscDesc": { "Modified": "desc" } }
-  ]
-}
-```
-
-### 🛡️ Managed environments: managed vs unmanaged
-
-Count how many environments are Managed Environments versus not.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatform/environments'"] },
-    { "$type": "extend", "FieldName": "IsManaged", "Expression": "tostring(properties.isManaged)" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "EnvironmentCount",
-        "FieldList": ["IsManaged"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "EnvironmentCount": "desc" } }
-  ]
-}
-```
-
-### 🏷️ Environment types: production, sandbox, developer, and more
-
-Break your environments down by type. A pile of Developer environments usually means everyone spun up their own, which is worth knowing before you tighten governance.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatform/environments'"] },
-    { "$type": "extend", "FieldName": "EnvironmentType", "Expression": "tostring(properties.environmentType)" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "EnvironmentCount",
-        "FieldList": ["EnvironmentType"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "EnvironmentCount": "desc" } }
-  ]
-}
-```
-
-### 🌐 Environments by region: where your data lives
-
-Count environments per region. On a single-geo tenant this is one row, but if you operate across geographies it's a quick data-residency check.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatform/environments'"] },
-    { "$type": "extend", "FieldName": "Region", "Expression": "tostring(location)" },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "EnvironmentCount",
-        "FieldList": ["Region"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "EnvironmentCount": "desc" } }
-  ]
-}
-```
-
-### 📆 Recently used resources: activity by last used
-
-The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carrying `properties.lastUsed` and `properties.resourceId`, giving you **real usage telemetry**. Join it back to the resource to see the friendly name, newest activity first.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
-    { "$type": "extend", "FieldName": "LastUsed", "Expression": "todatetime(properties.lastUsed)" },
-    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(properties.resourceId))" },
-    {
-      "$type": "join",
-      "JoinKind": "leftouter",
-      "RightTable": {
-        "TableName": "PowerPlatformResources",
-        "Clauses": [
-          {
-            "$type": "project",
-            "FieldList": [
-              "joinKey = tolower(name)",
-              "ResourceName = properties.displayName",
-              "ResourceType = type"
-            ]
-          }
-        ]
-      },
-      "LeftColumnName": "joinKey",
-      "RightColumnName": "joinKey"
-    },
-    { "$type": "project", "FieldList": ["ResourceName", "ResourceType", "LastUsed"] },
-    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "desc" } }
-  ]
-}
-```
-
-### 🧹 Unused resources: not used in 30+ days
-
-Flip the usage query around: surface resources whose last activity is older than 30 days. These are cleanup candidates based on real usage rather than just modified dates.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
-    { "$type": "extend", "FieldName": "LastUsed", "Expression": "todatetime(properties.lastUsed)" },
-    { "$type": "where", "FieldName": "LastUsed", "Operator": "<", "Values": ["ago(30d)"] },
-    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(properties.resourceId))" },
-    {
-      "$type": "join",
-      "JoinKind": "leftouter",
-      "RightTable": {
-        "TableName": "PowerPlatformResources",
-        "Clauses": [
-          {
-            "$type": "project",
-            "FieldList": [
-              "joinKey = tolower(name)",
-              "ResourceName = properties.displayName",
-              "ResourceType = type",
-              "Owner = properties.ownerId"
-            ]
-          }
-        ]
-      },
-      "LeftColumnName": "joinKey",
-      "RightColumnName": "joinKey"
-    },
-    { "$type": "project", "FieldList": ["ResourceName", "ResourceType", "LastUsed", "Owner"] },
-    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "asc" } }
-  ]
-}
-```
-
-### 🧑‍🦲 Orphaned resources: owners to cross-check against deleted accounts
-
-The inventory API gives you each resource's owner ID, but not whether that account still exists in Entra ID. So you can't ask it for "orphaned" resources directly. What you *can* do is group everything by owner and export the list, then diff those owner IDs against your disabled or deleted accounts. Anything owned by an account that's gone is orphaned.
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerapps/modeldrivenapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "Owner", "Expression": "tostring(properties.ownerId)" },
-    { "$type": "where", "FieldName": "Owner", "Operator": "!=", "Values": ["''"] },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "count",
-        "OperatorFieldName": "ResourceCount",
-        "FieldList": ["Owner"]
-      }
-    },
-    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
-  ]
-}
-```
-
-### 🧯 Stale connectors: connectors whose usage has gone cold
-
-> [!NOTE]
-> The inventory API doesn't expose individual **connection** instances, so you can't query stale *connections* directly. As an approximation, this ranks each **connector** by the most recent activity of any resource that uses it. A `null` (or old) `LastUsed` flags connectors only referenced by dormant resources. Uses `mvexpand` + `argmax` (empirical, see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
-
-```json
-{
-  "TableName": "PowerPlatformResources",
-  "Clauses": [
-    {
-      "$type": "where",
-      "FieldName": "type",
-      "Operator": "in~",
-      "Values": [
-        "'microsoft.powerapps/canvasapps'",
-        "'microsoft.powerautomate/cloudflows'",
-        "'microsoft.powerautomate/agentflows'",
-        "'microsoft.copilotstudio/agents'"
-      ]
-    },
-    { "$type": "extend", "FieldName": "joinKey", "Expression": "tolower(tostring(name))" },
-    { "$type": "extend", "FieldName": "ppc", "Expression": "properties.powerPlatformConnectors" },
-    { "$type": "mvexpand", "FieldList": ["ppc"] },
-    { "$type": "extend", "FieldName": "ConnectorId", "Expression": "tostring(ppc.connectorId)" },
-    { "$type": "where", "FieldName": "ConnectorId", "Operator": "!=", "Values": ["''"] },
-    {
-      "$type": "join",
-      "JoinKind": "leftouter",
-      "RightTable": {
-        "TableName": "PowerPlatformResources",
-        "Clauses": [
-          { "$type": "where", "FieldName": "type", "Operator": "==", "Values": ["'microsoft.powerplatformusage/usagerecords'"] },
-          {
-            "$type": "project",
-            "FieldList": [
-              "joinKey = tolower(tostring(properties.resourceId))",
-              "LastUsed = todatetime(properties.lastUsed)"
-            ]
-          }
-        ]
-      },
-      "LeftColumnName": "joinKey",
-      "RightColumnName": "joinKey"
-    },
-    {
-      "$type": "summarize",
-      "SummarizeClauseExpression": {
-        "OperatorName": "argmax",
-        "OperatorFieldName": "LastUsed",
-        "FieldList": ["ConnectorId"]
-      }
-    },
-    { "$type": "project", "FieldList": ["ConnectorId", "LastUsed"] },
-    { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "asc" } }
-  ]
-}
-```
+| Sample | What it answers |
+| --- | --- |
+| [Maker adoption](./samples/maker-adoption/) | Who builds the most apps, flows, and agents? |
+| [Environment sprawl](./samples/environment-sprawl/) | How many resources of each type live in each environment? |
+| [Connector audit](./samples/connector-audit/) | Which connectors are used most across the tenant? |
+| [New resources](./samples/new-resources/) | What was created in the last 30 days? |
+| [Adoption trend](./samples/adoption-trend/) | How many resources are created each month? |
+| [Recently modified](./samples/recently-modified/) | What changed in the last 7 days? |
+| [Managed environments](./samples/managed-environments/) | How many environments are managed versus not? |
+| [Environment types](./samples/environment-types/) | How do environments split across production, sandbox, and developer? |
+| [Environments by region](./samples/environments-by-region/) | Where does your environment data live? |
+| [Recently used](./samples/recently-used/) | What was used recently, from real usage telemetry? |
+| [Unused resources](./samples/unused-resources/) | What hasn't been used in 30+ days? |
+| [Orphaned resources](./samples/orphaned-resources/) | Which owners should you cross-check against deleted accounts? |
+| [Stale connectors](./samples/stale-connectors/) | Which connectors are only referenced by dormant resources? |
+| [Count by type](./samples/count-by-type/) | How many resources of each type and location exist? |
+| [Environment inventory](./samples/environments/) | What are all the environments, with region, type, and managed state? |
 
 ## 📚 References
 

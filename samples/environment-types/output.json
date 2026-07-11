@@ -1,0 +1,25 @@
+{
+  "totalRecords": 4,
+  "count": 4,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "EnvironmentType": "Sandbox",
+      "EnvironmentCount": 12
+    },
+    {
+      "EnvironmentType": "Developer",
+      "EnvironmentCount": 5
+    },
+    {
+      "EnvironmentType": "Production",
+      "EnvironmentCount": 1
+    },
+    {
+      "EnvironmentType": "Default",
+      "EnvironmentCount": 1
+    }
+  ],
+  "facets": []
+}

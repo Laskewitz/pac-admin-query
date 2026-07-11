@@ -1,0 +1,17 @@
+{
+  "totalRecords": 2,
+  "count": 2,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "IsManaged": "true",
+      "EnvironmentCount": 10
+    },
+    {
+      "IsManaged": "false",
+      "EnvironmentCount": 9
+    }
+  ],
+  "facets": []
+}
