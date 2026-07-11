@@ -1,9 +1,11 @@
 # 🔍 pac-admin-query
 
 > [!NOTE]
-> 🙌 The original `pac-admin-query` skill was made by **[@petrochuk](https://github.com/petrochuk)**. This repo wraps it with docs and a few extra example queries. Thanks! 💜
+> 🙌 The bundled `pac-admin-query` agent skill was written by **[Andrew Petrochuk](https://github.com/petrochuk)**. Thanks, Andrew! 💜
 
-A [GitHub Copilot](https://github.com/features/copilot) skill for querying your tenant-wide Power Platform inventory with `pac admin query`. Use it to list, count, and export **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 from the command line.
+Version `2.9.3` of the Power Platform CLI added a new command, `pac admin query`, for querying your tenant-wide Power Platform inventory. This repo gives you working sample queries for it, and it bundles an agent skill by [Andrew Petrochuk](https://github.com/petrochuk) so [GitHub Copilot](https://github.com/features/copilot) can build and run them for you.
+
+Query **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 straight from the command line.
 
 📦 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
 
@@ -325,6 +327,41 @@ Flip the usage query around: surface resources whose last activity is older than
     },
     { "$type": "project", "FieldList": ["ResourceName", "ResourceType", "LastUsed", "Owner"] },
     { "$type": "orderby", "FieldNamesAscDesc": { "LastUsed": "asc" } }
+  ]
+}
+```
+
+### 🧑‍🦲 Orphaned resources — owners to cross-check against deleted accounts
+
+The inventory API gives you each resource's owner ID, but not whether that account still exists in Entra ID. So you can't ask it for "orphaned" resources directly. What you *can* do is group everything by owner and export the list, then diff those owner IDs against your disabled or deleted accounts. Anything owned by an account that's gone is orphaned. 🕵️
+
+```json
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    { "$type": "extend", "FieldName": "Owner", "Expression": "tostring(properties.ownerId)" },
+    { "$type": "where", "FieldName": "Owner", "Operator": "!=", "Values": ["''"] },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": ["Owner"]
+      }
+    },
+    { "$type": "orderby", "FieldNamesAscDesc": { "ResourceCount": "desc" } }
   ]
 }
 ```

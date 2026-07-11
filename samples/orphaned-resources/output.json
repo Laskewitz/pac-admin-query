@@ -1,0 +1,29 @@
+{
+  "totalRecords": 5,
+  "count": 5,
+  "resultTruncated": 1,
+  "skipToken": null,
+  "data": [
+    {
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000001",
+      "ResourceCount": 410
+    },
+    {
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000002",
+      "ResourceCount": 32
+    },
+    {
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000003",
+      "ResourceCount": 29
+    },
+    {
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000004",
+      "ResourceCount": 20
+    },
+    {
+      "Owner": "aaaaaaaa-bbbb-cccc-dddd-000000000005",
+      "ResourceCount": 3
+    }
+  ],
+  "facets": []
+}
