@@ -1,0 +1,12 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    { "$type": "where", "FieldName": "type", "Operator": "in~", "Values": [ "'microsoft.powerapps/canvasapps'", "'microsoft.powerautomate/cloudflows'", "'microsoft.powerautomate/agentflows'", "'microsoft.copilotstudio/agents'" ] },
+    { "$type": "extend", "FieldName": "ppc", "Expression": "properties.powerPlatformConnectors" },
+    { "$type": "mvexpand", "FieldList": ["ppc"] },
+    { "$type": "extend", "FieldName": "ConnectorId", "Expression": "tostring(ppc.connectorId)" },
+    { "$type": "where", "FieldName": "ConnectorId", "Operator": "!=", "Values": ["''"] },
+    { "$type": "summarize", "SummarizeClauseExpression": { "OperatorName": "count", "OperatorFieldName": "UsageCount", "FieldList": ["ConnectorId"] } },
+    { "$type": "orderby", "FieldNamesAscDesc": { "UsageCount": "desc" } }
+  ]
+}
