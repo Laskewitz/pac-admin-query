@@ -73,7 +73,7 @@ Flip the usage query around and surface resources whose last activity is older t
 }
 ```
 
-[`query.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/query.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/query.json)
 
 ## Run it
 
@@ -205,4 +205,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[`output.json` (raw)](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/output.json)
+[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/unused-resources/output.json)
