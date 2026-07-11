@@ -107,23 +107,40 @@ Every query below has its own folder under [`samples/`](./samples/) with a runna
 > [!IMPORTANT]
 > The inventory API exposes resource structure (owner, environment, connectors, created and modified dates), not run or launch telemetry or Entra account status. So treat "stale" as not recently modified rather than unused, and confirm "orphaned" ownership separately.
 
+### 🌍 Environments
+
 | Sample | What it answers |
 | --- | --- |
-| [Maker adoption](./samples/maker-adoption/) | Who builds the most apps, flows, and agents? |
+| [Environment inventory](./samples/environments/) | Every environment with region, type, and managed state. |
 | [Environment sprawl](./samples/environment-sprawl/) | How many resources of each type live in each environment? |
-| [Connector audit](./samples/connector-audit/) | Which connectors are used most across the tenant? |
-| [New resources](./samples/new-resources/) | What was created in the last 30 days? |
-| [Adoption trend](./samples/adoption-trend/) | How many resources are created each month? |
-| [Recently modified](./samples/recently-modified/) | What changed in the last 7 days? |
 | [Managed environments](./samples/managed-environments/) | How many environments are managed versus not? |
 | [Environment types](./samples/environment-types/) | How do environments split across production, sandbox, and developer? |
 | [Environments by region](./samples/environments-by-region/) | Where does your environment data live? |
+
+### 📦 Resources
+
+| Sample | What it answers |
+| --- | --- |
+| [Count by type](./samples/count-by-type/) | How many resources of each type and location exist? |
+| [Maker adoption](./samples/maker-adoption/) | Who builds the most apps, flows, and agents? |
+| [New resources](./samples/new-resources/) | What was created in the last 30 days? |
+| [Adoption trend](./samples/adoption-trend/) | How many resources are created each month? |
+| [Recently modified](./samples/recently-modified/) | What changed in the last 7 days? |
+| [Orphaned resources](./samples/orphaned-resources/) | Which owners should you cross-check against deleted accounts? |
+
+### 🔌 Connectors
+
+| Sample | What it answers |
+| --- | --- |
+| [Connector audit](./samples/connector-audit/) | Which connectors are used most across the tenant? |
+| [Stale connectors](./samples/stale-connectors/) | Which connectors are only referenced by dormant resources? |
+
+### 📊 Usage
+
+| Sample | What it answers |
+| --- | --- |
 | [Recently used](./samples/recently-used/) | What was used recently, from real usage telemetry? |
 | [Unused resources](./samples/unused-resources/) | What hasn't been used in 30+ days? |
-| [Orphaned resources](./samples/orphaned-resources/) | Which owners should you cross-check against deleted accounts? |
-| [Stale connectors](./samples/stale-connectors/) | Which connectors are only referenced by dormant resources? |
-| [Count by type](./samples/count-by-type/) | How many resources of each type and location exist? |
-| [Environment inventory](./samples/environments/) | What are all the environments, with region, type, and managed state? |
 
 ## 📚 References
 
