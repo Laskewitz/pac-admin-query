@@ -1,0 +1,57 @@
+{
+  "Options": {
+    "Top": 10,
+    "Skip": 0,
+    "SkipToken": ""
+  },
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.copilotstudio/agents'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.powerapps/apps'",
+        "'microsoft.powerautomate/m365agentflows'",
+        "'microsoft.powerapps/codeapps'"
+      ]
+    },
+    {
+      "$type": "where",
+      "FieldName": "properties.subType",
+      "Operator": "in~",
+      "Values": [
+        "'appBuilderApp'",
+        "'copilotCanvasApp'",
+        "'byocApp'",
+        "'vibeApp'",
+        "'powerAppsApp'",
+        "''"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "properties",
+      "Expression": "todynamic(properties)"
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "tostring(properties.createdAt)": "desc"
+      }
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "['Last Modified'] = properties.lastModifiedAt",
+        "Name = properties.displayName",
+        "Type = type"
+      ]
+    }
+  ]
+}

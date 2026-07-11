@@ -1,0 +1,40 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "==",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'"
+      ]
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "Id = name",
+        "Name = properties.displayName",
+        "Location = location",
+        "EnvironmentId = properties.environmentId",
+        "OwnerId = properties.ownerId",
+        "CreatedAt = properties.createdAt",
+        "LastModifiedAt = properties.lastModifiedAt"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "todatetime(LastModifiedAt)": "desc"
+      }
+    },
+    {
+      "$type": "take",
+      "TakeCount": 100
+    }
+  ],
+  "Options": {
+    "Top": 100,
+    "Skip": 0,
+    "SkipToken": ""
+  }
+}

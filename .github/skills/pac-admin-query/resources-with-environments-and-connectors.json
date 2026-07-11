@@ -1,0 +1,153 @@
+{
+  "Options": {
+    "Top": 1000,
+    "Skip": 0,
+    "SkipToken": ""
+  },
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.copilotstudio/agents'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.powerapps/apps'",
+        "'microsoft.powerautomate/m365agentflows'",
+        "'microsoft.powerapps/codeapps'"
+      ]
+    },
+    {
+      "$type": "where",
+      "FieldName": "properties.subType",
+      "Operator": "in~",
+      "Values": [
+        "'appBuilderApp'",
+        "'copilotCanvasApp'",
+        "'byocApp'",
+        "'vibeApp'",
+        "'powerAppsApp'",
+        "''"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "joinKey",
+      "Expression": "tolower(tostring(properties.environmentId))"
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "joinKey",
+        "name",
+        "type",
+        "properties"
+      ]
+    },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "where",
+            "FieldName": "type",
+            "Operator": "==",
+            "Values": [
+              "'microsoft.powerplatform/environments'"
+            ]
+          },
+          {
+            "$type": "project",
+            "FieldList": [
+              "joinKey = tolower(name)",
+              "environmentName = properties.displayName",
+              "environmentRegion = location",
+              "environmentType = properties.environmentType",
+              "isManagedEnvironment = properties.isManaged",
+              "environmentGroupId = tolower(properties.environmentGroupId)"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "joinKey",
+      "RightColumnName": "joinKey"
+    },
+    {
+      "$type": "join",
+      "JoinKind": "leftouter",
+      "RightTable": {
+        "TableName": "PowerPlatformResources",
+        "Clauses": [
+          {
+            "$type": "where",
+            "FieldName": "type",
+            "Operator": "==",
+            "Values": [
+              "'microsoft.powerplatform/environmentgroups'"
+            ]
+          },
+          {
+            "$type": "project",
+            "FieldList": [
+              "environmentGroupId = tolower(name)",
+              "environmentGroupName = properties.displayName"
+            ]
+          }
+        ]
+      },
+      "LeftColumnName": "environmentGroupId",
+      "RightColumnName": "environmentGroupId"
+    },
+    {
+      "$type": "extend",
+      "FieldName": "ppc",
+      "Expression": "iff(isnull(properties.powerPlatformConnectors) or array_length(properties.powerPlatformConnectors) == 0, dynamic([dynamic(null)]), properties.powerPlatformConnectors)"
+    },
+    {
+      "$type": "mvexpand",
+      "FieldList": [
+        "ppc"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "connectorId",
+      "Expression": "tostring(ppc.connectorId)"
+    },
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "make_set",
+        "OperatorFieldName": "connectorId",
+        "FieldList": [
+          "name",
+          "type",
+          "tostring(properties)",
+          "tostring(environmentName)",
+          "environmentRegion",
+          "tostring(environmentType)",
+          "tostring(isManagedEnvironment)",
+          "environmentGroupId",
+          "tostring(environmentGroupName)"
+        ]
+      }
+    },
+    {
+      "$type": "extend",
+      "FieldName": "properties",
+      "Expression": "todynamic(properties)"
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "tostring(properties.createdAt)": "desc"
+      }
+    }
+  ]
+}

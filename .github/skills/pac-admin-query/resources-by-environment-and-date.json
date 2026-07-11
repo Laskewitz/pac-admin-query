@@ -1,0 +1,64 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "in~",
+      "Values": [
+        "'microsoft.powerapps/canvasapps'",
+        "'microsoft.powerapps/modeldrivenapps'",
+        "'microsoft.powerapps/codeapps'",
+        "'microsoft.powerautomate/cloudflows'",
+        "'microsoft.powerautomate/agentflows'",
+        "'microsoft.powerautomate/m365agentflows'",
+        "'microsoft.copilotstudio/agents'"
+      ]
+    },
+    {
+      "$type": "where",
+      "FieldName": "properties.environmentId",
+      "Operator": "==",
+      "Values": [
+        "'REPLACE_WITH_ENVIRONMENT_ID'"
+      ]
+    },
+    {
+      "$type": "extend",
+      "FieldName": "CreatedDate",
+      "Expression": "todatetime(properties.createdAt)"
+    },
+    {
+      "$type": "where",
+      "FieldName": "CreatedDate",
+      "Operator": ">=",
+      "Values": [
+        "datetime(2026-01-01)"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "CreatedDate": "desc"
+      }
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "Id = name",
+        "Name = properties.displayName",
+        "Type = type",
+        "Location = location",
+        "EnvironmentId = properties.environmentId",
+        "OwnerId = properties.ownerId",
+        "CreatedAt = properties.createdAt",
+        "LastModifiedAt = properties.lastModifiedAt"
+      ]
+    }
+  ],
+  "Options": {
+    "Top": 1000,
+    "Skip": 0,
+    "SkipToken": ""
+  }
+}

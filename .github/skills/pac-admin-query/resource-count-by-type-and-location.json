@@ -1,0 +1,27 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "summarize",
+      "SummarizeClauseExpression": {
+        "OperatorName": "count",
+        "OperatorFieldName": "ResourceCount",
+        "FieldList": [
+          "type",
+          "location"
+        ]
+      }
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "ResourceCount": "desc"
+      }
+    }
+  ],
+  "Options": {
+    "Top": 500,
+    "Skip": 0,
+    "SkipToken": ""
+  }
+}

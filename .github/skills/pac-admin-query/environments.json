@@ -1,0 +1,37 @@
+{
+  "TableName": "PowerPlatformResources",
+  "Clauses": [
+    {
+      "$type": "where",
+      "FieldName": "type",
+      "Operator": "==",
+      "Values": [
+        "'microsoft.powerplatform/environments'"
+      ]
+    },
+    {
+      "$type": "project",
+      "FieldList": [
+        "EnvironmentId = name",
+        "Name = properties.displayName",
+        "Region = location",
+        "EnvironmentType = properties.environmentType",
+        "IsManaged = properties.isManaged",
+        "EnvironmentGroup = properties.environmentGroup",
+        "EnvironmentGroupId = properties.environmentGroupId",
+        "LastModifiedAt = properties.lastModifiedAt"
+      ]
+    },
+    {
+      "$type": "orderby",
+      "FieldNamesAscDesc": {
+        "tostring(Name)": "asc"
+      }
+    }
+  ],
+  "Options": {
+    "Top": 500,
+    "Skip": 0,
+    "SkipToken": ""
+  }
+}
