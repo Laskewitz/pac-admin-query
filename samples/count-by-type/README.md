@@ -34,7 +34,7 @@ How many resources of each type and location exist across the tenant? The simple
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/count-by-type/query.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/count-by-type/query.json)
 
 ## Run it
 
@@ -108,4 +108,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/count-by-type/output.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/count-by-type/output.json)

@@ -48,7 +48,7 @@ Break down how many resources of each type live in each environment. Useful for 
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-sprawl/query.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-sprawl/query.json)
 
 ## Run it
 
@@ -172,4 +172,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-sprawl/output.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/environment-sprawl/output.json)

@@ -44,7 +44,7 @@ Bin every app, flow, and agent by the month it was created to see how fast the t
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/adoption-trend/query.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/adoption-trend/query.json)
 
 ## Run it
 
@@ -76,4 +76,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/adoption-trend/output.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/adoption-trend/output.json)

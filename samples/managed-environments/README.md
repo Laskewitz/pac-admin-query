@@ -41,7 +41,7 @@ Count how many environments are Managed Environments versus not.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/managed-environments/query.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/managed-environments/query.json)
 
 ## Run it
 
@@ -73,4 +73,4 @@ Sanitized excerpt from a live tenant.
 }
 ```
 
-[download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/managed-environments/output.json)
+[Download](https://raw.githubusercontent.com/Laskewitz/pac-admin-query/main/samples/managed-environments/output.json)
