@@ -1,38 +1,66 @@
-# pac-admin-query
+# 🔍 pac-admin-query
 
-A [GitHub Copilot](https://github.com/features/copilot) / agent skill for building and running **Power Platform inventory** queries with `pac admin query`. It helps you list, filter, count, aggregate, export, and inspect tenant-wide Power Apps, Power Automate flows, Copilot Studio agents, environments, environment groups, and connectors.
+> A [GitHub Copilot](https://github.com/features/copilot) agent **skill** for building and running **Power Platform inventory** queries with `pac admin query`.
 
-The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
+List, filter, count, aggregate, export, and inspect tenant-wide **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 — all from the command line.
 
-## Prerequisites
+📦 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
 
-- A PAC CLI build that includes `pac admin query` (verified with `2.9.3`).
-- An active PAC auth profile with tenant context and permission to call the [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api).
+---
+
+## 📑 Contents
+
+- [✅ Prerequisites](#-prerequisites)
+- [🚀 Usage](#-usage)
+- [💡 Example queries](#-example-queries)
+  - [👷 Maker adoption](#-maker-adoption--top-makers-by-resource-count)
+  - [🌍 Environment sprawl](#-environment-sprawl--resource-count-per-environment-and-type)
+  - [🔌 Connector audit](#-connector-audit--rank-connectors-by-usage)
+- [📚 References](#-references)
+
+---
+
+## ✅ Prerequisites
+
+- 🛠️ A PAC CLI build that includes `pac admin query` (verified with `2.9.3`).
+- 🔐 An active PAC auth profile with tenant context and permission to call the [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api).
 
 ```powershell
-pac auth list      # inspect profiles
-pac auth select    # activate the right one
+pac auth list      # 👀 inspect profiles
+pac auth select    # 🎯 activate the right one
 ```
 
-## Usage
+---
 
-Prefer a query file over inline JSON to avoid shell-escaping errors:
+## 🚀 Usage
+
+> 💡 **Tip:** Prefer a query file over inline JSON to avoid shell-escaping headaches.
 
 ```powershell
-pac admin query --query-file .\query.json                    # Grid (CSV-like) to console
-pac admin query -qf .\query.json -ot Json -of .\out.json     # full JSON with metadata
-pac admin query -qf .\query.json -ot Grid -of .\out.csv      # CSV export
+pac admin query --query-file .\query.json                    # 📋 Grid (CSV-like) to console
+pac admin query -qf .\query.json -ot Json -of .\out.json     # 🧾 full JSON with metadata
+pac admin query -qf .\query.json -ot Grid -of .\out.csv      # 📈 CSV export
 ```
 
-Output types: `Grid` (default), `List`, `Json`. See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request shape, clause reference, and resource-type table.
+| Output type | Flag | Best for |
+| --- | --- | --- |
+| `Grid` *(default)* | `-ot Grid` | 👓 Quick, readable tables |
+| `List` | `-ot List` | 📝 Simple line-per-field text |
+| `Json` | `-ot Json` | 🧬 Nested data, metadata & pagination |
 
-## Example queries
+📖 See [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md) for the full request shape, clause reference, and resource-type table.
 
-These Center-of-Excellence-style examples were validated against a live tenant. The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates) — it does not expose run/launch telemetry or Entra account status, so treat "stale" as *not recently modified* rather than *unused*.
+---
 
-### Maker adoption — top makers by resource count
+## 💡 Example queries
 
-Who is building the most apps, flows, and agents across the tenant.
+These governance-style examples were ✅ validated against a live tenant.
+
+> ⚠️ **Heads up:** The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates) — **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
+
+### 👷 Maker adoption — top makers by resource count
+
+Who is building the most apps, flows, and agents across the tenant? 🏆
 
 ```json
 {
@@ -64,9 +92,9 @@ Who is building the most apps, flows, and agents across the tenant.
 }
 ```
 
-### Environment sprawl — resource count per environment and type
+### 🌍 Environment sprawl — resource count per environment and type
 
-Break down how many resources of each type live in each environment.
+Break down how many resources of each type live in each environment. 📊
 
 ```json
 {
@@ -97,9 +125,9 @@ Break down how many resources of each type live in each environment.
 }
 ```
 
-### Connector audit — rank connectors by usage
+### 🔌 Connector audit — rank connectors by usage
 
-Aggregate every connector used across the tenant to spot premium or risky connectors. Uses `mvexpand` + `summarize` (empirical clauses — see `SKILL.md`).
+Aggregate every connector used across the tenant to spot premium or risky connectors. 🚨 Uses `mvexpand` + `summarize` (empirical clauses — see [`SKILL.md`](./.github/skills/pac-admin-query/SKILL.md)).
 
 ```json
 {
@@ -133,10 +161,11 @@ Aggregate every connector used across the tenant to spot premium or risky connec
 }
 ```
 
-More examples ship in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/), including environment inventory, resource counts by type/location, and an advanced query that joins environment and environment-group details with aggregated connectors.
+✨ More examples ship in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/), including environment inventory, resource counts by type/location, and an advanced query that joins environment and environment-group details with aggregated connectors.
 
-## References
+---
 
-- [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api)
-- [Power Platform inventory schema](https://learn.microsoft.com/en-us/power-platform/admin/inventory-schema)
-- [CoE Starter Kit](https://learn.microsoft.com/en-us/power-platform/guidance/coe/starter-kit)
+## 📚 References
+
+- 🌐 [Power Platform inventory API](https://learn.microsoft.com/en-us/power-platform/admin/inventory-api)
+- 🧬 [Power Platform inventory schema](https://learn.microsoft.com/en-us/power-platform/admin/inventory-schema)
