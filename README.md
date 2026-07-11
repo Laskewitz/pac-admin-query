@@ -1,30 +1,11 @@
 # 🔍 pac-admin-query
 
-> A [GitHub Copilot](https://github.com/features/copilot) agent **skill** for building and running **Power Platform inventory** queries with `pac admin query`.
-
 > [!NOTE]
-> 🙌 **Credits** — the original `pac-admin-query` skill was created by **[@petrochuk](https://github.com/petrochuk)**. This repo packages, documents, and extends it. Thank you! 💜
+> 🙌 The original `pac-admin-query` skill was made by **[@petrochuk](https://github.com/petrochuk)**. This repo wraps it with docs and a few extra example queries. Thanks! 💜
 
-List, filter, count, aggregate, export, and inspect tenant-wide **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 — all from the command line.
+A [GitHub Copilot](https://github.com/features/copilot) skill for querying your tenant-wide Power Platform inventory with `pac admin query`. Use it to list, count, and export **Power Apps** 🎨, **Power Automate flows** ⚡, **Copilot Studio agents** 🤖, **environments** 🌍, **environment groups** 🗂️, and **connectors** 🔌 from the command line.
 
 📦 The skill lives in [`.github/skills/pac-admin-query/`](./.github/skills/pac-admin-query/) and bundles a `SKILL.md` reference plus ready-to-adapt example query files.
-
----
-
-## 📑 Contents
-
-- [✅ Prerequisites](#-prerequisites)
-- [🚀 Usage](#-usage)
-- [💡 Example queries](#-example-queries)
-  - [👷 Maker adoption](#-maker-adoption--top-makers-by-resource-count)
-  - [🌍 Environment sprawl](#-environment-sprawl--resource-count-per-environment-and-type)
-  - [🔌 Connector audit](#-connector-audit--rank-connectors-by-usage)
-  - [🆕 New resources](#-new-resources--created-in-the-last-30-days)
-  - [🛡️ Managed environments](#️-managed-environments--managed-vs-unmanaged)
-  - [📆 Recently used resources](#-recently-used-resources--activity-by-last-used)
-  - [🧹 Unused resources](#-unused-resources--not-used-in-30-days)
-  - [🧯 Stale connectors](#-stale-connectors--connectors-whose-usage-has-gone-cold)
-- [📚 References](#-references)
 
 ---
 
@@ -109,7 +90,7 @@ pac auth who                                                 # ✅ confirm the a
 
 ## 💡 Example queries
 
-These governance-style examples were ✅ validated against a live tenant.
+These governance-style examples are ones I validated against a live tenant.
 
 > ⚠️ **Heads up:** The inventory API exposes resource *structure* (owner, environment, connectors, created/modified dates) — **not** run/launch telemetry or Entra account status. So treat "stale" as *not recently modified* rather than *unused*, and confirm "orphaned" ownership separately.
 
@@ -218,7 +199,7 @@ Aggregate every connector used across the tenant to spot premium or risky connec
 
 ### 🆕 New resources — created in the last 30 days
 
-Track growth and spot fresh builds across the tenant. 🌱
+Track growth and see what's been built lately. 🌱
 
 ```json
 {
@@ -312,7 +293,7 @@ The tenant also exposes a `microsoft.powerplatformusage/usagerecords` type carry
 
 ### 🧹 Unused resources — not used in 30+ days
 
-Flip the usage query around: surface resources whose last activity is older than 30 days — cleanup candidates backed by actual usage, not just modified dates. 🗑️
+Flip the usage query around: surface resources whose last activity is older than 30 days. These are cleanup candidates based on real usage rather than just modified dates. 🗑️
 
 ```json
 {
